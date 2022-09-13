@@ -1588,7 +1588,7 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
 
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
         if (recordAudio) {
-            mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+            mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         }
 
         mMediaRecorder.setOutputFile(path);
@@ -1694,10 +1694,10 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
         mMediaRecorder.setVideoEncodingBitRate(profile.videoBitRate);
         mMediaRecorder.setVideoEncoder(profile.videoCodec);
         if (recordAudio) {
-            mMediaRecorder.setAudioEncodingBitRate(profile.audioBitRate);
-            mMediaRecorder.setAudioChannels(profile.audioChannels);
-            mMediaRecorder.setAudioSamplingRate(profile.audioSampleRate);
-            mMediaRecorder.setAudioEncoder(profile.audioCodec);
+            mMediaRecorder.setAudioEncodingBitRate(128000);
+            mMediaRecorder.setAudioChannels(1);
+            mMediaRecorder.setAudioSamplingRate(48000);
+            mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         }
     }
 
