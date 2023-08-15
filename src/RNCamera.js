@@ -613,8 +613,7 @@ export default class Camera extends React.Component<PropsType, StateType> {
     const { captureAudio } = this.props;
 
     if (
-      !captureAudio ||
-      recordAudioPermissionStatus !== RecordAudioPermissionStatusEnum.AUTHORIZED
+      !captureAudio
     ) {
       options.mute = true;
     }
