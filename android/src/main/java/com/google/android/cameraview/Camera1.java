@@ -1169,6 +1169,9 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
         setScanningInternal(mIsScanning);
         setPlaySoundInternal(mPlaySoundOnCapture);
 
+        // Set saturation to high
+        mCameraParameters.set("saturation", "high");
+      
         try {
             mCamera.setParameters(mCameraParameters);
         } catch (RuntimeException e) {
