@@ -1171,6 +1171,12 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
 
         // Set saturation to high
         mCameraParameters.set("saturation", "high");
+        mCameraParameters.set("sharpness", "high");
+        mCameraParameters.set("contrast", "high");
+        mCameraParameters.set("brightness", "high");
+        mCameraParameters.set("3dnr-mode", "off");
+        mCameraParameters.set("3dnr", "off");
+        mCameraParameters.set("fb-extreme-beauty", "off");
       
         try {
             mCamera.setParameters(mCameraParameters);
