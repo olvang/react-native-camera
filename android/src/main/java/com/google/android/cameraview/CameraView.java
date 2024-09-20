@@ -594,6 +594,10 @@ public class CameraView extends FrameLayout {
       mImpl.setWhiteBalance(whiteBalance);
     }
 
+    public void setCustomSettings(ReadableMap customSettings) {
+        mImpl.setCustomSettings(customSettings);
+    }
+
     public int getWhiteBalance() {
       return mImpl.getWhiteBalance();
     }

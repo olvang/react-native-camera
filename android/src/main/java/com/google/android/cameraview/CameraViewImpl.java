@@ -129,6 +129,8 @@ abstract class CameraViewImpl {
 
     abstract void setWhiteBalance(int whiteBalance);
 
+    abstract void setCustomSettings(ReadableMap customSettings);
+
     abstract int getWhiteBalance();
 
     abstract void setPlaySoundOnCapture(boolean playSoundOnCapture);

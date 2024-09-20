@@ -273,6 +273,8 @@ class Camera2 extends CameraViewImpl implements MediaRecorder.OnInfoListener, Me
     private Surface mPreviewSurface;
 
     private Rect mInitialCropRegion;
+    
+    private ReadableMap customSettings;
 
     Camera2(Callback callback, PreviewImpl preview, Context context, Handler bgHandler) {
         super(callback, preview, bgHandler);
@@ -679,6 +681,11 @@ class Camera2 extends CameraViewImpl implements MediaRecorder.OnInfoListener, Me
     @Override
     float getZoom() {
         return mZoom;
+    }
+
+    @Override
+    public void setCustomSettings(ReadableMap customSettings) {
+        this.customSettings = customSettings;
     }
 
     @Override

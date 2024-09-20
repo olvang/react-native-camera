@@ -92,6 +92,9 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
   private int mCameraViewWidth = 0;
   private int mCameraViewHeight = 0;
 
+  // custom settings
+  private ReadableMap customSettings;
+
   public RNCameraView(ThemedReactContext themedReactContext) {
     super(themedReactContext, true);
     mThemedReactContext = themedReactContext;
@@ -266,7 +269,7 @@ public class RNCameraView extends CameraView implements LifecycleEventListener, 
   public void setDetectedImageInEvent(boolean detectedImageInEvent) {
     this.mDetectedImageInEvent = detectedImageInEvent;
   }
-
+  
   public void takePicture(final ReadableMap options, final Promise promise, final File cacheDirectory) {
     mBgHandler.post(new Runnable() {
       @Override

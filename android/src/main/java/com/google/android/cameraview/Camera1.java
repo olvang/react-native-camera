@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableType;
 
 import java.io.File;
 import java.io.IOException;
@@ -127,6 +128,8 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
     private float mZoom;
 
     private int mWhiteBalance;
+
+    private ReadableMap customSettings;
 
     private boolean mIsScanning;
 
@@ -676,6 +679,11 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
     }
 
     @Override
+    public void setCustomSettings(ReadableMap customSettings) {
+    this.customSettings = customSettings;
+    }
+
+    @Override
     public int getWhiteBalance() {
         return mWhiteBalance;
     }
@@ -1140,6 +1148,13 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
             );
         }
 
+        // If customSettings.v4 is true
+        // Force set the picture size 4632x3480
+        // pictureSize = new Size(4632, 3480);
+        if (customSettings != null && customSettings.hasKey("v4") && !customSettings.isNull("v4") && customSettings.getBoolean("v4")) {
+            pictureSize = new Size(4632, 3480);
+        }
+
         boolean needsToStopPreview = mIsPreviewActive;
         if (needsToStopPreview) {
             mCamera.stopPreview();
@@ -1169,15 +1184,31 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
         setScanningInternal(mIsScanning);
         setPlaySoundInternal(mPlaySoundOnCapture);
 
-        // Set saturation to high
-        mCameraParameters.set("saturation", "high");
-        mCameraParameters.set("sharpness", "high");
-        mCameraParameters.set("contrast", "high");
-        mCameraParameters.set("brightness", "high");
-        mCameraParameters.set("3dnr-mode", "off");
-        mCameraParameters.set("3dnr", "off");
-        mCameraParameters.set("fb-extreme-beauty", "off");
-      
+
+        // Log the customSettings to the console
+        Log.w("CAMERA_1::", "Custom Settings: " + customSettings);
+
+        if (customSettings == null || !customSettings.hasKey("v4") || customSettings.isNull("v4") || !customSettings.getBoolean("v4")) {
+            mCameraParameters.set("saturation", "high");
+            mCameraParameters.set("sharpness", "high");
+            mCameraParameters.set("contrast", "high");
+            //mCameraParameters.set("brightness", "high");
+            mCameraParameters.set("3dnr-mode", "off");
+            mCameraParameters.set("3dnr", "off");
+            mCameraParameters.set("fb-extreme-beauty", "off");
+            Log.w("CAMERA_1::", "mCameraParameters.set"); 
+        }
+
+        // If the customsettings has "wbFineTune" set and it is a int
+        // And is it between -500 and 500
+        // Set the white balance fine tune
+        // "wb-fine-tune"
+        if (customSettings != null && customSettings.hasKey("wbFineTune") && !customSettings.isNull("wbFineTune") && customSettings.getType("wbFineTune") == ReadableType.Number && customSettings.getInt("wbFineTune") >= -500 && customSettings.getInt("wbFineTune") <= 500) {
+            mCameraParameters.set("wb-fine-tune", customSettings.getInt("wbFineTune"));
+            Log.w("CAMERA_1::", "mCameraParameters.set wb-fine-tune"); 
+        }
+        
+
         try {
             mCamera.setParameters(mCameraParameters);
         } catch (RuntimeException e) {
@@ -1596,8 +1627,9 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
         mMediaRecorder.setCamera(mCamera);
 
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+        
         if (recordAudio) {
-            mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
         }
 
         mMediaRecorder.setOutputFile(path);

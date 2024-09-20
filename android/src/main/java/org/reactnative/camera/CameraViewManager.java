@@ -72,6 +72,11 @@ public class CameraViewManager extends ViewGroupManager<RNCameraView> {
     return builder.build();
   }
 
+  @ReactProp(name = "customSettings")
+  public void setCustomSettings(RNCameraView view, ReadableMap settings) {
+      view.setCustomSettings(settings);
+  }
+
   @ReactProp(name = "type")
   public void setType(RNCameraView view, int type) {
     view.setFacing(type);
